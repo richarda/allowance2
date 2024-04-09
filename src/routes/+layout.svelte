@@ -18,6 +18,7 @@
 
 		return () => data.subscription.unsubscribe()
 	})
+	
 </script>
 
 <svelte:head>

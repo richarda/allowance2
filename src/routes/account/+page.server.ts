@@ -15,7 +15,11 @@ export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession 
     .eq('id', session.user.id)
     .single()
 
-  return { session, profile }
+  const { data: children, error: error2 } = await supabase
+    .from('children')
+    .select();
+
+  return { session, profile, children }
 }
 
 export const actions: Actions = {
@@ -53,4 +57,9 @@ export const actions: Actions = {
       throw redirect(303, '/')
     }
   },
+  pay: async ({ request, locals: { supabase, safeGetSession } }) => {
+    const formData = await request.formData()
+    //const childId
+  }
+
 }
