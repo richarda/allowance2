@@ -8,9 +8,10 @@ export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession 
     throw redirect(303, '/')
   }
 
-  const { data: profile } = await supabase
+
+  const { data: profile, error: error } = await supabase
     .from('profiles')
-    .select(`username, full_name, website, avatar_url`)
+    .select(`full_name, avatar_url`)
     .eq('id', session.user.id)
     .single()
 
@@ -21,8 +22,7 @@ export const actions: Actions = {
   update: async ({ request, locals: { supabase, safeGetSession } }) => {
     const formData = await request.formData()
     const fullName = formData.get('fullName') as string
-    const username = formData.get('username') as string
-    const website = formData.get('website') as string
+
     const avatarUrl = formData.get('avatarUrl') as string
 
     const { session } = await safeGetSession()
@@ -30,8 +30,6 @@ export const actions: Actions = {
     const { error } = await supabase.from('profiles').upsert({
       id: session?.user.id,
       full_name: fullName,
-      username,
-      website,
       avatar_url: avatarUrl,
       updated_at: new Date(),
     })
@@ -39,16 +37,12 @@ export const actions: Actions = {
     if (error) {
       return fail(500, {
         fullName,
-        username,
-        website,
         avatarUrl,
       })
     }
 
     return {
       fullName,
-      username,
-      website,
       avatarUrl,
     }
   },
