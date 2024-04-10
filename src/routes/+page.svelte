@@ -15,7 +15,8 @@
 		<Auth
 			supabaseClient={data.supabase}
 			view='magic_link'
-			redirectTo={`${data.url}/auth/callback`}
+			providers={['google']}
+			redirectTo={`${process.env.NODE_ENV === 'development' ? 'http://localhost:5173' : data.url}/auth/callback`}
 			showLinks={false}
 			appearance={{ theme: ThemeSupa, style: { input: 'color: #C71585' } }}
 		/>
