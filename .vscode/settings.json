@@ -6,5 +6,17 @@
   "deno.unstable": true,
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "python.languageServer": "Pylance",
+  "python.analysis.diagnosticSeverityOverrides": {
+    "reportMissingModuleSource": "none",
+    "reportShadowedImports": "none"
+  },
+  "python.analysis.extraPaths": [
+    "/Users/richard/.vscode/extensions/ms-python.devicesimulatorexpress-2020.0.36321/out",
+    "/Users/richard/.vscode/extensions/joedevivo.vscode-circuitpython-0.2.0-darwin-arm64/stubs",
+    "/Users/richard/Library/Application Support/Code/User/globalStorage/joedevivo.vscode-circuitpython/bundle/20240411/adafruit-circuitpython-bundle-py-20240411/lib",
+    "/Users/richard/.vscode/extensions/ms-python.devicesimulatorexpress-2020.0.36321/out/base_circuitpython"
+  ],
+  "circuitpython.board.version": null
 }

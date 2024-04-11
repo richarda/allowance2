@@ -29,13 +29,6 @@
 		};
 	};
 
-	const handlePayment: SubmitFunction = () => {
-		loading = true;
-		return async ({ update }) => {
-			loading = false;
-			update();
-		};
-	};
 </script>
 
 <div class="grid-container">
@@ -44,11 +37,12 @@
 			<h2>{child.name}</h2>
 			<p>Balance: ${child.balance}</p>
 			<div class="form-widget">
-				<form class="form-widget" method="post" action="?/pay" use:enhance={handlePayment}>
+				<form class="form-widget" method="post" action="?/pay" use:enhance={handleSubmit}>
 					<div class="form-row">
 						<label for="amount">Amount:</label>
 						<div class="input-group">
-							<input id="amount" type="number" min="0" bind:value={child.paymentAmount} required />
+							<input name="amount" type="number" min="0" required />
+							<input type="hidden" name="childId" value={child.id} />
 							<button class="pay-button" type="submit">Pay</button>
 						</div>
 					</div>
@@ -73,7 +67,7 @@
 
 		<div>
 			<label for="fullName">Full Name</label>
-			<input id="fullName" name="fullName" type="text" value={form?.fullName ?? fullName} />
+			<input id="fullName" name="fullName" type="number" value={form?.fullName ?? fullName} />
 		</div>
 
 		<div>
