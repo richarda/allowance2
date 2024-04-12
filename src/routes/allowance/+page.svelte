@@ -9,8 +9,8 @@
 	{#each data.childrenWithBalance ?? [] as child}
 		<div class="grid-item">
             <div class="header">
-                <h2>{child.name}</h2>
-                <p class="balance">${child.balance}</p>
+                <a class="child-name" href="/child/{child.id}">{child.name}</a>
+                <span class="balance">${child.balance}</span>
             </div>
 			<div class="form-widget">
 				<form class="form-widget" method="post" action="?/pay" use:enhance>
@@ -54,7 +54,10 @@
 		justify-content: space-between;
 		align-items: center;
 	}
-
+    .child-name {
+        font-size: 1.5em;
+        text-decoration: none;
+    }
 	.balance {
 		font-size: 2em;
 		text-align: right;
