@@ -31,7 +31,7 @@
 		<div class="navbar-brand">
 			<a href="/" class="navbar-item">Home</a>
 			<a href="/account" class="navbar-item">Account</a>
-			<a href="/todo" class="navbar-item">Todo</a>
+			<a href="/allowance" class="navbar-item">Allowance</a>
 		</div>
 		<div class="navbar-end">
 			{#if session}

@@ -5,9 +5,9 @@ import type { PageServerLoad } from './$types'
 export const load: PageServerLoad = async ({ url, locals: { safeGetSession } }) => {
   const { session } = await safeGetSession()
 
-  // if the user is already logged in return them to the account page
+  // if the user is already logged in return them to the allowance page
   if (session) {
-    throw redirect(303, '/account')
+    throw redirect(303, '/allowance')
   }
 
   return { url: url.origin }
