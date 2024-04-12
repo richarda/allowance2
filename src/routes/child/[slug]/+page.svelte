@@ -1,26 +1,32 @@
 <script>
-    export let data;
+	export let data;
+	let transactionsWithRunningTotal = data.transactions?.map((transaction, i, transactions) => {
+		const runningTotal = transactions.slice(0, i + 1).reduce((total, t) => total + t.amount, 0);
+		return { ...transaction, runningTotal };
+	});
 </script>
 
-{#if data.transactions}
-<table>
-	<thead>
-		<tr>
-			<th>Date</th>
-			<th>Amount</th>
-			<th>Note</th>
-		</tr>
-	</thead>
-	<tbody>
-		{#each data.transactions as transaction, i}
-			<tr class:even={i % 2 === 0} class:odd={i % 2 !== 0}>
-				<td>{transaction.created_at}</td>
-				<td>${transaction.amount}</td>
-				<td></td>
+{#if transactionsWithRunningTotal}
+	<table>
+		<thead>
+			<tr>
+				<th>Date</th>
+				<th>Amount</th>
+				<th>Balance</th>
+				<th>Note</th>
 			</tr>
-		{/each}
-	</tbody>
-</table>
+		</thead>
+		<tbody>
+			{#each transactionsWithRunningTotal as transaction, i}
+				<tr class:even={i % 2 === 0} class:odd={i % 2 !== 0}>
+					<td>{new Date(transaction.created_at).toLocaleString()}</td>
+					<td>${transaction.amount}</td>
+					<td>${transaction.runningTotal.toFixed(2)}</td>
+					<td></td>
+				</tr>
+			{/each}
+		</tbody>
+	</table>
 {/if}
 
 <style>
