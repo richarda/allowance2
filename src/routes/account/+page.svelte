@@ -46,7 +46,7 @@
 
 		<div>
 			<label for="fullName">Full Name</label>
-			<input id="fullName" name="fullName" type="number" value={form?.fullName ?? fullName} />
+			<input id="fullName" name="fullName" value={form?.fullName ?? fullName} />
 		</div>
 
 		<div>
