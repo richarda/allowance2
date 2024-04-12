@@ -9,8 +9,14 @@ export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession 
 	}
 
     // compute balances based on sum of amounts in transactions by child
-	const { data: children, error: error2 } = await supabase.from('children').select('id, name, transactions(balance:amount.sum())');
+	const { data: children, error: error } = await supabase.from('children').select('id, name, transactions(balance:amount.sum())');
     
+    if (error) {
+        return fail(500, {
+            children
+        });
+    }
+
     type ChildWithBalance = typeof children[0] & { balance: number };
 
     const childrenWithBalance: ChildWithBalance[] = children.map(child => {
@@ -26,8 +32,27 @@ export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession 
 export const actions: Actions = {
 	pay: async ({ request, locals: { supabase, safeGetSession } }) => {
 		const formData = await request.formData();
-		const amount = formData.get('amount') as number;
-		const childId = formData.get('childId') as number;
+		const amount = parseFloat(formData.get('amount') as string);
+		const childId = parseInt(formData.get('childId') as string);
+
+		const { error } = await supabase.from('transactions')
+        .insert({ child_id: childId, amount: amount });
+        if (error) {
+            return fail(500, {
+                amount,
+                childId
+            });
+        }
+
+        return {
+            amount,
+            childId
+        }
+	},
+    spend: async ({ request, locals: { supabase, safeGetSession } }) => {
+		const formData = await request.formData();
+		const amount = parseFloat(formData.get('amount') as string) * -1;
+		const childId = parseInt(formData.get('childId') as string);
 
 		const { error } = await supabase.from('transactions')
         .insert({ child_id: childId, amount: amount });
@@ -43,4 +68,5 @@ export const actions: Actions = {
             childId
         }
 	}
+
 };
