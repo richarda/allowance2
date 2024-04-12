@@ -32,8 +32,6 @@
 			<a href="/" class="navbar-item">Home</a>
 			<a href="/account" class="navbar-item">Account</a>
 			<a href="/allowance" class="navbar-item">Allowance</a>
-		</div>
-		<div class="navbar-end">
 			{#if session}
 				<a href="/account" class="navbar-item">Sign Out</a>
 			{:else}
