@@ -15,15 +15,18 @@ export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession 
 		.single();
 
     // compute balances based on sum of amounts in transactions by child
-	let { data: children, error: error2 } = await supabase.from('children').select('id, name, transactions(balance:amount.sum())');
-    children = children.map(child => {
+	const { data: children, error: error2 } = await supabase.from('children').select('id, name, transactions(balance:amount.sum())');
+    
+    type ChildWithBalance = typeof children[0] & { balance: number };
+
+    const childrenWithBalance: ChildWithBalance[] = children.map(child => {
         return {
             ...child,
             balance: child.transactions[0]?.balance || 0
         }
     });
     
-	return { session, profile, children };
+	return { session, profile, childrenWithBalance };
 };
 
 export const actions: Actions = {

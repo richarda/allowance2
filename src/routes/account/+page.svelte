@@ -6,8 +6,8 @@
 	export let data;
 	export let form;
 
-	let { session, supabase, profile, children } = data;
-	$: ({ session, supabase, profile, children } = data);
+	let { session, supabase, profile, childrenWithBalance } = data;
+	$: ({ session, supabase, profile, childrenWithBalance } = data);
 
 	let profileForm: HTMLFormElement;
 	let loading = false;
@@ -32,16 +32,19 @@
 </script>
 
 <div class="grid-container">
-	{#each children ?? [] as child (child.id)}
+	{#each childrenWithBalance ?? [] as child}
 		<div class="grid-item">
-			<h2>{child.name}</h2>
-			<p>Balance: ${child.balance}</p>
+			
 			<div class="form-widget">
-				<form class="form-widget" method="post" action="?/pay" use:enhance={handleSubmit}>
+				<form class="form-widget" method="post" action="?/pay" use:enhance>
+					<div class="form-row">
+						<h2>{child.name}</h2>
+						<p>Balance: ${child.balance}</p>
+					</div>
 					<div class="form-row">
 						<label for="amount">Amount:</label>
 						<div class="input-group">
-							<input name="amount" type="number" min="0" required />
+							<input name="amount" type="number" step="0.01" min="0" required />
 							<input type="hidden" name="childId" value={child.id} />
 							<button class="pay-button" type="submit">Pay</button>
 						</div>
