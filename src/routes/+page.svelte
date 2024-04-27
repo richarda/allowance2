@@ -1,9 +1,9 @@
 <!-- src/routes/+page.svelte -->
 <script lang="ts">
-	import { Auth } from '@supabase/auth-ui-svelte'
-	import { ThemeSupa } from '@supabase/auth-ui-shared'
+	import { Auth } from '@supabase/auth-ui-svelte';
+	import { ThemeSupa } from '@supabase/auth-ui-shared';
 
-	export let data
+	export let data;
 </script>
 
 <svelte:head>
@@ -14,7 +14,7 @@
 	<div class="col-6 form-widget">
 		<Auth
 			supabaseClient={data.supabase}
-			view='magic_link'
+			view="magic_link"
 			providers={['google']}
 			redirectTo={`${process.env.NODE_ENV === 'development' ? 'http://localhost:5173' : data.url}/auth/callback`}
 			showLinks={false}

@@ -1,4 +1,4 @@
-<!-- src/routes/account/+page.svelte -->
+<!-- src/routes/profile/+page.svelte -->
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import type { SubmitFunction } from '@sveltejs/kit';
@@ -28,7 +28,6 @@
 			update();
 		};
 	};
-
 </script>
 
 <div class="form-widget">
@@ -52,7 +51,7 @@
 		<div>
 			<input
 				type="submit"
-				class="button block primary"
+				class="button primary block"
 				value={loading ? 'Loading...' : 'Update'}
 				disabled={loading}
 			/>
@@ -65,4 +64,3 @@
 		</div>
 	</form>
 </div>
-

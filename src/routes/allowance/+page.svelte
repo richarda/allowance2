@@ -8,10 +8,10 @@
 <div class="grid-container">
 	{#each data.childrenWithBalance ?? [] as child}
 		<div class="grid-item">
-            <div class="header">
-                <a class="child-name" href="/child/{child.id}">{child.name}</a>
-                <span class="balance">${child.balance}</span>
-            </div>
+			<div class="header">
+				<a class="child-name" href="/child/{child.id}">{child.name}</a>
+				<span class="balance">${child.balance}</span>
+			</div>
 			<div class="form-widget">
 				<form class="form-widget" method="post" action="?/pay" use:enhance>
 					<div class="form-row">
@@ -54,14 +54,14 @@
 		justify-content: space-between;
 		align-items: center;
 	}
-    .child-name {
-        font-size: 1.5em;
-        text-decoration: none;
-    }
+	.child-name {
+		font-size: 1.5em;
+		text-decoration: none;
+	}
 	.balance {
 		font-size: 2em;
 		text-align: right;
-        font-family: 'Monaco', monospace;
+		font-family: 'Monaco', monospace;
 	}
 	.form-row {
 		display: flex;
