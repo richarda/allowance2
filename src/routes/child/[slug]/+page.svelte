@@ -1,9 +1,12 @@
 <script>
+	import { enhance } from '$app/forms';
+
 	export let data;
 	let transactionsWithRunningTotal = data.transactions?.map((transaction, i, transactions) => {
 		const runningTotal = transactions.slice(0, i + 1).reduce((total, t) => total + t.amount, 0);
 		return { ...transaction, runningTotal };
 	});
+	transactionsWithRunningTotal?.reverse();
 </script>
 
 {#if transactionsWithRunningTotal}
@@ -22,7 +25,21 @@
 					<td>{new Date(transaction.created_at).toLocaleString()}</td>
 					<td>${transaction.amount}</td>
 					<td>${transaction.runningTotal.toFixed(2)}</td>
-					<td></td>
+					<td>
+						<form class="form-widget" method="post" action="?/addNote">
+							<input type="hidden" name="transactionId" value={transaction.id} />
+							<div class="join">
+								<input
+									name="note"
+									type="text"
+									class="input join-item input-bordered"
+									bind:value={transaction.note}
+									placeholder="Enter note"
+								/>
+								<button type="submit" class="btn join-item rounded-r-full">Submit</button>
+							</div>
+						</form>
+					</td>
 				</tr>
 			{/each}
 		</tbody>

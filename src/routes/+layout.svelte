@@ -20,7 +20,7 @@
 </script>
 
 <svelte:head>
-	<title>User Management</title>
+	<title>Allowance</title>
 </svelte:head>
 
 <!-- nav bar -->

@@ -12,6 +12,32 @@
 				<a class="child-name" href="/child/{child.id}">{child.name}</a>
 				<span class="balance">${child.balance}</span>
 			</div>
+			<div class="overflow-x-auto">
+				<table class="table">
+					<!-- head -->
+					<thead>
+						<tr>
+							<th>Date</th>
+							<th>Amount</th>
+							<th>Note</th>
+						</tr>
+					</thead>
+					<tbody>
+						{#each data.transactions ?? [] as transaction}
+							<tr>
+								<td
+									>{new Date(transaction.created_at).toLocaleDateString('en-US', {
+										day: 'numeric',
+										month: 'long'
+									})}</td
+								>
+								<td>${transaction.amount}</td>
+								<td>{transaction.note}</td>
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+			</div>
 			<div class="form-widget">
 				<form class="form-widget" method="post" action="?/pay" use:enhance>
 					<div class="form-row">
