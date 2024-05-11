@@ -10,31 +10,12 @@ export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession 
 
 	// compute balances based on sum of amounts in transactions by child
 	const { data: children, error: error } = await supabase
-		.from('children')
-		.select('id, name, transactions(balance:amount.sum())');
+		.from('children_with_balance')
+		.select('id, name, balance: total_transactions, transactions (amount, created_at, note)')
+		.order('created_at', { referencedTable: 'transactions', ascending: false })
+		.limit(3, { foreignTable: 'transactions' });
 
-	if (error) {
-		return fail(500, {
-			children
-		});
-	}
-
-	type ChildWithBalance = (typeof children)[0] & { balance: number };
-
-	const childrenWithBalance: ChildWithBalance[] = children.map((child) => {
-		return {
-			...child,
-			balance: child.transactions[0]?.balance || 0
-		};
-	});
-
-	const { data: transactions, error: error2 } = await supabase
-		.from('transactions')
-		.select('child_id, amount, created_at, note')
-		.order('created_at', { ascending: false })
-		.limit(5);
-
-	return { childrenWithBalance, transactions };
+	return { children };
 };
 
 export const actions: Actions = {

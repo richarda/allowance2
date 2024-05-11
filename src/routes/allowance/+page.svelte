@@ -6,7 +6,7 @@
 </script>
 
 <div class="grid-container">
-	{#each data.childrenWithBalance ?? [] as child}
+	{#each data.children ?? [] as child}
 		<div class="grid-item">
 			<div class="header">
 				<a class="child-name" href="/child/{child.id}">{child.name}</a>
@@ -23,7 +23,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						{#each data.transactions ?? [] as transaction}
+						{#each child.transactions ?? [] as transaction}
 							<tr>
 								<td
 									>{new Date(transaction.created_at).toLocaleDateString('en-US', {
