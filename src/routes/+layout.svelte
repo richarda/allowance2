@@ -1,6 +1,5 @@
 <!-- src/routes/+layout.svelte -->
 <script lang="ts">
-	import '../styles.css';
 	import '../app.css';
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
@@ -32,9 +31,3 @@
 <div class="container" style="padding: 50px 0 100px 0">
 	<slot />
 </div>
-
-<style lang="postcss">
-	:global(html) {
-		background-color: #ffc0cb;
-	}
-</style>
