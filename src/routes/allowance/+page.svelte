@@ -14,35 +14,37 @@
 				</div>
 				<div><span class="font-mono text-4xl">${child.balance}</span></div>
 				<div class="col-span-2">
-					<table class="table-xs">
-						<!-- head -->
-						<thead>
-							<tr class="text-left">
-								<th>Date</th>
-								<th>Amount</th>
-								<th>Note</th>
-							</tr>
-						</thead>
-						<tbody>
-							{#each child.transactions ?? [] as transaction}
-								<tr>
-									<td
-										>{new Date(transaction.created_at).toLocaleDateString('en-US', {
-											day: 'numeric',
-											month: 'long'
-										})}</td
-									>
-									<td class="text-right">
-										{transaction.amount.toLocaleString('en-US', {
-											style: 'currency',
-											currency: 'USD'
-										})}
-									</td>
-									<td>{transaction.note ?? ''}</td>
+					<a href="/child/{child.id}">
+						<table class="table-xs">
+							<!-- head -->
+							<thead>
+								<tr class="text-left">
+									<th>Date</th>
+									<th>Amount</th>
+									<th>Note</th>
 								</tr>
-							{/each}
-						</tbody>
-					</table>
+							</thead>
+							<tbody>
+								{#each child.transactions ?? [] as transaction}
+									<tr>
+										<td
+											>{new Date(transaction.created_at).toLocaleDateString('en-US', {
+												day: 'numeric',
+												month: 'long'
+											})}</td
+										>
+										<td class="text-right">
+											{transaction.amount.toLocaleString('en-US', {
+												style: 'currency',
+												currency: 'USD'
+											})}
+										</td>
+										<td>{transaction.note ?? ''}</td>
+									</tr>
+								{/each}
+							</tbody>
+						</table>
+					</a>
 				</div>
 				<div class="form-widget col-span-2">
 					<form class="form-widget" method="post" action="?/pay" use:enhance>
