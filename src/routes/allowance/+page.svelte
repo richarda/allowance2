@@ -5,7 +5,7 @@
 	export let data;
 </script>
 
-<div class="grid grid-cols-1 justify-center gap-4 sm:grid-cols-2">
+<div class="grid grid-cols-1 justify-center gap-2 sm:grid-cols-2 lg:grid-cols-3">
 	{#each data.children ?? [] as child}
 		<div class="container w-80 px-4">
 			<div class="grid grid-cols-2">
