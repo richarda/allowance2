@@ -28,6 +28,6 @@
 	<a href="/profile" class="btn btn-ghost text-xl">Profile</a>
 </div>
 
-<div class="container" style="padding: 50px 0 100px 0">
+<div class="container mx-auto">
 	<slot />
 </div>
