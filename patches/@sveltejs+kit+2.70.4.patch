@@ -1,0 +1,13 @@
+diff --git a/node_modules/@sveltejs/kit/src/runtime/client/state.svelte.js b/node_modules/@sveltejs/kit/src/runtime/client/state.svelte.js
+index 9f621d9..5541ac6 100644
+--- a/node_modules/@sveltejs/kit/src/runtime/client/state.svelte.js
++++ b/node_modules/@sveltejs/kit/src/runtime/client/state.svelte.js
+@@ -12,7 +12,7 @@ export let updated;
+ 
+ // this is a bootleg way to tell if we're in old svelte or new svelte
+ const is_legacy =
+-	onMount.toString().includes('$$') || /function \w+\(\) \{\}/.test(onMount.toString());
++	onMount.toString().includes('$$') || /function \w+\(\) \{\s*\}/.test(onMount.toString());
+ 
+ const placeholder_url = 'a:';
+ 
