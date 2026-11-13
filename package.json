@@ -18,6 +18,7 @@
 		"@sveltejs/adapter-vercel": "^6.3.5",
 		"@sveltejs/kit": "^2.70.4",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
+		"@tailwindcss/typography": "^0.5.20",
 		"@types/eslint": "^8.56.0",
 		"@typescript-eslint/eslint-plugin": "^7.0.0",
 		"@typescript-eslint/parser": "^7.0.0",
@@ -44,7 +45,8 @@
 		"@supabase/auth-ui-shared": "^0.1.8",
 		"@supabase/auth-ui-svelte": "^0.2.9",
 		"@supabase/ssr": "^0.0.7",
-		"@supabase/supabase-js": "^2.38.4"
+		"@supabase/supabase-js": "^2.38.4",
+		"marked": "^18.2.0"
 	},
 	"engines": {
 		"node": "24.x"

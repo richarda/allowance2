@@ -25,6 +25,7 @@
 <!-- nav bar -->
 <div class="navbar bg-base-100">
 	<a href="/allowance" class="btn btn-ghost text-xl">Allowance</a>
+	<a href="/interest" class="btn btn-ghost text-xl">Interest</a>
 	<a href="/profile" class="btn btn-ghost text-xl">Profile</a>
 </div>
 
