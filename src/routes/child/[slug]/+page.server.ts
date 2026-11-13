@@ -4,6 +4,7 @@ import {
 	addMonths,
 	dayOf,
 	daysInMonth,
+	isParent,
 	loadTransactions,
 	monthLabel,
 	monthOf,
@@ -26,6 +27,7 @@ export const load: PageServerLoad = async ({
 	const transactions = await loadTransactions(supabase, params.slug);
 	const currentMonth = monthOf(new Date());
 	const month = resolveMonth(url.searchParams.get('month'));
+	const canEdit = await isParent(supabase, session.user.id);
 
 	if (month === 'all') {
 		return {
@@ -39,7 +41,8 @@ export const load: PageServerLoad = async ({
 			transactions: [...transactions].reverse(),
 			prevLink: null,
 			nextLink: null,
-			isCurrentMonth: false
+			isCurrentMonth: false,
+			canEdit
 		};
 	}
 
@@ -121,12 +124,18 @@ export const load: PageServerLoad = async ({
 		transactions: [...monthTransactions].reverse(),
 		prevLink: previousMonth >= firstMonth ? previousMonth : null,
 		nextLink: month < currentMonth ? addMonths(month, 1) : null,
-		isCurrentMonth
+		isCurrentMonth,
+		canEdit
 	};
 };
 
 export const actions: Actions = {
 	addNote: async ({ request, locals: { supabase, safeGetSession } }) => {
+		const { session } = await safeGetSession();
+		if (!session || !(await isParent(supabase, session.user.id))) {
+			return fail(403, { message: 'Only parents can edit notes.' });
+		}
+
 		const formData = await request.formData();
 		const note = formData.get('note') as string;
 		const transactionId = parseInt(formData.get('transactionId') as string);

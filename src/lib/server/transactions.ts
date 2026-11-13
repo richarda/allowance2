@@ -59,3 +59,14 @@ export const loadTransactions = async (supabase: SupabaseClient, childId: string
 		return { ...t, runningTotal: total, month: monthOf(new Date(t.created_at)) };
 	});
 };
+
+/** Only parents may add or edit transactions (matches the "parents can …" RLS policies). */
+export const isParent = async (supabase: SupabaseClient, userId: string) => {
+	const { data } = await supabase
+		.from('parents')
+		.select('id')
+		.eq('user_id', userId)
+		.limit(1)
+		.maybeSingle();
+	return !!data;
+};
