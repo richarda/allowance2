@@ -7,6 +7,30 @@
 	const currency = (n: number) => n.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 	const shortDate = (d: string) =>
 		new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+	// Pay/Spend first ask for a note in a dialog, then post amount + note together.
+	// Without JavaScript the card forms still post directly (no note).
+	type Pending = {
+		action: 'pay' | 'spend';
+		childId: number;
+		childName: string;
+		amount: number;
+		form: HTMLFormElement;
+	};
+	let pending: Pending | null = null;
+	let dialog: HTMLDialogElement;
+	let noteInput: HTMLInputElement;
+	let saving = false;
+
+	const ask = (action: Pending['action'], child: { id: number; name: string }, e: SubmitEvent) => {
+		const form = e.currentTarget as HTMLFormElement;
+		const amount = parseFloat(new FormData(form).get('amount') as string);
+		if (!(amount > 0)) return;
+		pending = { action, childId: child.id, childName: child.name, amount, form };
+		dialog.showModal();
+		noteInput.value = '';
+		noteInput.focus();
+	};
 </script>
 
 <div class="grid grid-cols-1 gap-6 px-4 py-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -56,7 +80,7 @@
 				</div>
 
 				<div class="flex flex-col gap-2">
-					<form method="post" action="?/pay" use:enhance>
+					<form method="post" action="?/pay" on:submit|preventDefault={(e) => ask('pay', child, e)}>
 						<input type="hidden" name="childId" value={child.id} />
 						<div class="join w-full">
 							<input
@@ -72,7 +96,11 @@
 							<button class="btn btn-accent join-item w-24" type="submit">Pay</button>
 						</div>
 					</form>
-					<form method="post" action="?/spend" use:enhance>
+					<form
+						method="post"
+						action="?/spend"
+						on:submit|preventDefault={(e) => ask('spend', child, e)}
+					>
 						<input type="hidden" name="childId" value={child.id} />
 						<div class="join w-full">
 							<input
@@ -93,3 +121,68 @@
 		</div>
 	{/each}
 </div>
+
+<dialog
+	bind:this={dialog}
+	class="modal modal-bottom sm:modal-middle"
+	on:close={() => (pending = null)}
+>
+	<div class="modal-box">
+		{#if pending}
+			<h3 class="text-lg font-semibold">
+				{pending.action === 'pay' ? 'Pay' : 'Spend'}
+				{currency(pending.amount)}
+				{pending.action === 'pay' ? 'to' : 'from'}
+				{pending.childName}
+			</h3>
+		{/if}
+		<form
+			method="post"
+			action="?/{pending?.action ?? 'pay'}"
+			class="mt-4 flex flex-col gap-4"
+			use:enhance={() => {
+				saving = true;
+				return async ({ result, update }) => {
+					await update();
+					saving = false;
+					if (result.type === 'success' && pending) {
+						pending.form.reset();
+						dialog.close();
+					}
+				};
+			}}
+		>
+			<input type="hidden" name="childId" value={pending?.childId ?? ''} />
+			<input type="hidden" name="amount" value={pending?.amount ?? ''} />
+			<label class="form-control">
+				<span class="label-text mb-1">Note</span>
+				<input
+					bind:this={noteInput}
+					name="note"
+					type="text"
+					class="input input-bordered w-full"
+					placeholder={pending?.action === 'pay' ? 'e.g. Weekly allowance' : 'e.g. Lunch'}
+					autocomplete="off"
+				/>
+			</label>
+			<!-- Phones: big full-width button on top, Cancel below. Larger screens: side by side. -->
+			<div class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+				<button
+					type="button"
+					class="btn btn-ghost btn-lg w-full sm:btn-md sm:w-auto"
+					on:click={() => dialog.close()}>Cancel</button
+				>
+				<button
+					type="submit"
+					class="btn btn-lg w-full text-lg sm:btn-md sm:w-auto sm:text-sm"
+					class:btn-accent={pending?.action === 'pay'}
+					class:btn-primary={pending?.action === 'spend'}
+					disabled={saving}
+				>
+					{pending?.action === 'pay' ? 'Pay' : 'Spend'}
+				</button>
+			</div>
+		</form>
+	</div>
+	<form method="dialog" class="modal-backdrop"><button>close</button></form>
+</dialog>
