@@ -79,44 +79,46 @@
 					{/if}
 				</div>
 
-				<div class="flex flex-col gap-2">
-					<form method="post" action="?/pay" on:submit|preventDefault={(e) => ask('pay', child, e)}>
-						<input type="hidden" name="childId" value={child.id} />
-						<div class="join w-full">
-							<input
-								name="amount"
-								aria-label="Amount to pay {child.name}"
-								placeholder="0.00"
-								class="input join-item input-bordered input-accent w-full"
-								type="number"
-								step="0.01"
-								min="0"
-								required
-							/>
-							<button class="btn btn-accent join-item w-24" type="submit">Pay</button>
-						</div>
-					</form>
-					<form
-						method="post"
-						action="?/spend"
-						on:submit|preventDefault={(e) => ask('spend', child, e)}
-					>
-						<input type="hidden" name="childId" value={child.id} />
-						<div class="join w-full">
-							<input
-								name="amount"
-								aria-label="Amount {child.name} spent"
-								placeholder="0.00"
-								class="input join-item input-bordered input-primary w-full"
-								type="number"
-								step="0.01"
-								min="0"
-								required
-							/>
-							<button class="btn btn-primary join-item w-24" type="submit">Spend</button>
-						</div>
-					</form>
-				</div>
+				{#if data.canTransact}
+					<div class="flex flex-col gap-2">
+						<form method="post" action="?/pay" on:submit|preventDefault={(e) => ask('pay', child, e)}>
+							<input type="hidden" name="childId" value={child.id} />
+							<div class="join w-full">
+								<input
+									name="amount"
+									aria-label="Amount to pay {child.name}"
+									placeholder="0.00"
+									class="input join-item input-bordered input-accent w-full"
+									type="number"
+									step="0.01"
+									min="0"
+									required
+								/>
+								<button class="btn btn-accent join-item w-24" type="submit">Pay</button>
+							</div>
+						</form>
+						<form
+							method="post"
+							action="?/spend"
+							on:submit|preventDefault={(e) => ask('spend', child, e)}
+						>
+							<input type="hidden" name="childId" value={child.id} />
+							<div class="join w-full">
+								<input
+									name="amount"
+									aria-label="Amount {child.name} spent"
+									placeholder="0.00"
+									class="input join-item input-bordered input-primary w-full"
+									type="number"
+									step="0.01"
+									min="0"
+									required
+								/>
+								<button class="btn btn-primary join-item w-24" type="submit">Spend</button>
+							</div>
+						</form>
+					</div>
+				{/if}
 			</div>
 		</div>
 	{/each}

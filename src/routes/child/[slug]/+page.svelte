@@ -129,8 +129,8 @@
 							</td>
 							<td>{currency(transaction.runningTotal)}</td>
 							<td>
-								{#if transaction.kind === 'interest'}
-									<!-- Automatic transactions keep the note the system wrote. -->
+								{#if transaction.kind === 'interest' || !data.canEdit}
+									<!-- Automatic transactions keep the note the system wrote; only parents edit notes. -->
 									<span class="text-sm opacity-70">{transaction.note ?? ''}</span>
 								{:else}
 									<form class="form-widget" method="post" action="?month={data.month}&/addNote">
