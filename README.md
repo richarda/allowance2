@@ -1,4 +1,8 @@
-# create-svelte
+# Allowance
+
+See [docs/interest.md](docs/interest.md) for how monthly interest is calculated and posted.
+
+## create-svelte
 
 Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
 

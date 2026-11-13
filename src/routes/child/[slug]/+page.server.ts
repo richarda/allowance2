@@ -10,7 +10,7 @@ export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession 
 
 	const { data: transactions, error: error } = await supabase
 		.from('transactions')
-		.select(`id, created_at, amount, note`)
+		.select(`id, created_at, amount, note, kind`)
 		.eq('child_id', params.slug)
 		.order('created_at', { ascending: true });
 
