@@ -11,7 +11,7 @@ export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession 
 	// compute balances based on sum of amounts in transactions by child
 	const { data: children, error: error } = await supabase
 		.from('children_with_balance')
-		.select('id, name, balance: total_transactions, transactions (amount, created_at, note)')
+		.select('id, name, balance: total_transactions, transactions (amount, created_at, note, kind)')
 		.order('created_at', { referencedTable: 'transactions', ascending: false })
 		.limit(3, { foreignTable: 'transactions' });
 
