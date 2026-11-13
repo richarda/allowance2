@@ -761,3 +761,18 @@ ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON TAB
 
 
 
+
+-- Objects outside the public schema (from the hosted project), so local builds match production.
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW
+  EXECUTE FUNCTION public.handle_new_user();
+
+DROP POLICY IF EXISTS "Anyone can upload an avatar." ON "storage"."objects";
+CREATE POLICY "Anyone can upload an avatar." ON "storage"."objects"
+  FOR INSERT TO PUBLIC WITH CHECK ((bucket_id = 'avatars'::text));
+
+DROP POLICY IF EXISTS "Avatar images are publicly accessible." ON "storage"."objects";
+CREATE POLICY "Avatar images are publicly accessible." ON "storage"."objects"
+  FOR SELECT TO PUBLIC USING ((bucket_id = 'avatars'::text));

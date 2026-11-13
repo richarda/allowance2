@@ -123,11 +123,12 @@ supabase db dump --linked --data-only -s public -f /path/outside/repo/data.sql
 docker exec -i supabase_db_allowance24 psql -U postgres -d postgres < /path/outside/repo/data.sql
 ```
 
-**Deploying with the CLI:** the hosted database already contains the baseline schema, so mark that migration as applied **once** before the first push. Otherwise `db push` would try to create the tables again:
+**Deploying with the CLI** (CLI 3.x targets the local database unless you pass `--remote`): the hosted database already contains the baseline schema, so mark that migration as applied **once** before the first push. Otherwise `db push` would try to create the tables again:
 
 ```sh
-supabase migration repair --status applied 20240328000000
-supabase db push      # applies 20261113000000_monthly_interest.sql
+supabase migration repair --status applied 20240328000000 --remote
+supabase db push --remote --dry-run   # should list only 20261113000000_monthly_interest.sql
+supabase db push --remote
 ```
 
 Then run the backfill in the dashboard SQL editor.
