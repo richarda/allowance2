@@ -24,7 +24,12 @@
 				{#each transactionsWithRunningTotal as transaction, i}
 					<tr class:even={i % 2 === 0} class:odd={i % 2 !== 0}>
 						<td>{new Date(transaction.created_at).toLocaleString()}</td>
-						<td>${transaction.amount}</td>
+						<td>
+							${transaction.amount}
+							{#if transaction.kind === 'interest'}
+								<span class="badge badge-success badge-sm ml-1">Interest</span>
+							{/if}
+						</td>
 						<td>${transaction.runningTotal.toFixed(2)}</td>
 						<td>
 							<form class="form-widget" method="post" action="?/addNote">
