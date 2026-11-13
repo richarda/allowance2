@@ -1,6 +1,6 @@
 # Monthly Interest
 
-Each child's balance earns interest. Once a month, Supabase works out each child's **average daily balance** for the month that just ended, applies the yearly rate (an APY), and posts an interest deposit dated **11:59:59 PM (Eastern) on the last day of that month**.
+Each child's balance earns interest. Once a month, the database (Supabase) works out each child's **average daily balance** for the month that just ended, applies the yearly rate (an APY), and posts an interest deposit dated **11:59:59 PM (Eastern) on the last day of that month**.
 
 Everything runs inside the Supabase Postgres database. The SvelteKit app only displays the results. The SQL is in [`supabase/migrations/20261113000000_monthly_interest.sql`](../supabase/migrations/20261113000000_monthly_interest.sql).
 
